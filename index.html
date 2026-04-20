@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Los Vikingos del Polanens</title>
+  <link href="https://fonts.googleapis.com/css2?family=Viking:wght@400&family=Cinzel:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --crimson: #9B1B1B;
+      --gold: #C8982A;
+      --dark: #0D0D0D;
+      --darker: #070707;
+      --surface: #161616;
+      --surface2: #1F1F1F;
+      --border: rgba(200, 152, 42, 0.25);
+      --text: #F0EBE0;
+      --muted: #8A8070;
+      --accent: #E8B84B;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--darker);
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* NOISE TEXTURE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(7,7,7,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 64px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo .rune {
+      font-size: 28px;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .nav-logo span {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding-top: 64px;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(155, 27, 27, 0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 50% 80%, rgba(200, 152, 42, 0.08) 0%, transparent 60%),
+        var(--darker);
+    }
+
+    .hero-shield {
+      position: absolute;
+      width: 560px;
+      height: 560px;
+      opacity: 0.04;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.5;
+    }
+
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      line-height: 1.05;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero h1 .line1 { color: var(--text); }
+    .hero h1 .line2 {
+      color: var(--crimson);
+      display: block;
+      font-size: 0.7em;
+      letter-spacing: 0.18em;
+    }
+    .hero h1 .line3 {
+      color: var(--accent);
+      display: block;
+      font-size: 0.52em;
+      letter-spacing: 0.28em;
+    }
+
+    .hero-subtitle {
+      margin-top: 1.8rem;
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--crimson);
+      color: var(--text);
+      border: none;
+      padding: 13px 32px;
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    .btn-primary:hover { background: #B82020; transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid rgba(200, 152, 42, 0.5);
+      padding: 13px 32px;
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold);
+      background: rgba(200, 152, 42, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.1); }
+    }
+
+    /* SECTIONS */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 2rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .section-divider {
+      width: 60px;
+      height: 2px;
+      background: var(--crimson);
+      margin: 1rem auto 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ABOUT / HISTORIA */
+    .about-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text p {
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-size: 15px;
+    }
+
+    .about-text p strong { color: var(--accent); font-weight: 700; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .stat-box {
+      background: var(--surface2);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Cinzel', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--crimson);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    /* NOTICIAS */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .news-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .news-card:hover {
+      border-color: rgba(200, 152, 42, 0.6);
+      transform: translateY(-3px);
+    }
+
+    .news-img {
+      height: 160px;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .news-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(155,27,27,0.3), rgba(200,152,42,0.1));
+    }
+
+    .news-emoji { position: relative; z-index: 1; }
+
+    .news-body { padding: 1.5rem; }
+
+    .news-date {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .news-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 0.8rem;
+    }
+
+    .news-excerpt {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* TIENDA */
+    .shop-section {
+      background: var(--darker);
+    }
+
+    .shop-filters {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid rgba(138, 128, 112, 0.3);
+      padding: 7px 20px;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--crimson);
+      color: var(--text);
+      border-color: var(--crimson);
+    }
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all 0.25s;
+      position: relative;
+    }
+
+    .product-card:hover {
+      border-color: rgba(200, 152, 42, 0.5);
+      transform: translateY(-4px);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--crimson);
+      color: var(--text);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      font-weight: 700;
+      z-index: 2;
+    }
+
+    .product-img {
+      height: 200px;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-body {
+      padding: 1.2rem;
+    }
+
+    .product-category {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .product-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .product-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .product-price {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .product-cta {
+      background: transparent;
+      color: var(--crimson);
+      border: 1px solid var(--crimson);
+      padding: 6px 14px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .product-cta:hover {
+      background: var(--crimson);
+      color: var(--text);
+    }
+
+    .shop-note {
+      text-align: center;
+      margin-top: 2.5rem;
+      padding: 1.2rem;
+      border: 1px dashed rgba(200, 152, 42, 0.3);
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .shop-note strong { color: var(--gold); }
+
+    /* CALENDAR */
+    .calendar-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .events-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .event-item {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 1.2rem 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .event-item:hover { border-color: rgba(200, 152, 42, 0.5); }
+
+    .event-date-box {
+      text-align: center;
+    }
+
+    .event-day {
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--crimson);
+      line-height: 1;
+    }
+
+    .event-month {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .event-info h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .event-info p {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .event-tag {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+
+    .event-tag.home { color: #4CAF50; border-color: rgba(76, 175, 80, 0.4); }
+    .event-tag.away { color: #FF7043; border-color: rgba(255, 112, 67, 0.4); }
+    .event-tag.social { color: var(--gold); border-color: rgba(200, 152, 42, 0.4); }
+
+    /* GALERIA */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto;
+      gap: 6px;
+    }
+
+    .gallery-item {
+      background: var(--surface2);
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      border: 1px solid var(--border);
+      transition: all 0.25s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; font-size: 4rem; }
+
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(155, 27, 27, 0);
+      transition: background 0.2s;
+    }
+
+    .gallery-item:hover::after { background: rgba(155, 27, 27, 0.25); }
+    .gallery-item:hover { border-color: var(--crimson); }
+
+    /* CONTACTO */
+    .contact-section { background: var(--darker); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .contact-info h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.08em;
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .contact-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .contact-detail p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .contact-detail strong { color: var(--text); font-size: 13px; letter-spacing: 0.05em; }
+
+    .social-links {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .social-btn:hover {
+      border-color: var(--gold);
+      background: rgba(200, 152, 42, 0.1);
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      padding: 12px 16px;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: rgba(200, 152, 42, 0.7);
+    }
+
+    .contact-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: var(--muted);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--darker);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-logo span { color: var(--crimson); }
+
+    .footer-tagline {
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .footer-runes {
+      font-size: 20px;
+      color: var(--gold);
+      opacity: 0.4;
+      letter-spacing: 0.3em;
+      margin-top: 1.5rem;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      max-width: 420px;
+      width: 90%;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .modal h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal .price {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .modal p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+
+    .modal-note {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 0.8rem 1rem;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 1rem;
+    }
+
+    .hidden-product { display: none; }
+
+    @media (max-width: 768px) {
+      .about-grid, .contact-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-item:nth-child(1) { grid-column: span 2; }
+      nav { padding: 0 1.2rem; }
+      .nav-links { gap: 1rem; }
+      .event-item { grid-template-columns: 60px 1fr; }
+      .event-tag { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">
+      <span class="rune">⚔</span>
+      <span>Los Vikingos del Polanens</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#historia">Historia</a></li>
+      <li><a href="#noticias">Noticias</a></li>
+      <li><a href="#tienda">Tienda</a></li>
+      <li><a href="#agenda">Agenda</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <svg class="hero-shield" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 5 L90 20 L90 55 Q90 80 50 95 Q10 80 10 55 L10 20 Z" fill="white"/>
+      <path d="M50 15 L80 28 L80 55 Q80 73 50 85 Q20 73 20 55 L20 28 Z" fill="none" stroke="white" stroke-width="2"/>
+      <line x1="50" y1="15" x2="50" y2="85" stroke="white" stroke-width="2"/>
+      <line x1="20" y1="40" x2="80" y2="40" stroke="white" stroke-width="2"/>
+    </svg>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Peña Oficial de Afición</div>
+      <h1>
+        <span class="line1">Los Vikingos</span>
+        <span class="line2">del</span>
+        <span class="line3">Polanens</span>
+      </h1>
+      <p class="hero-subtitle">Unidos por la pasión, la sangre y los colores. Juntos somos invencibles, juntos somos la marea.</p>
+      <div class="hero-cta">
+        <a href="#historia" class="btn-primary">Conócenos</a>
+        <a href="#tienda" class="btn-outline">Tienda Vikinga</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      Explorar
+    </div>
+  </section>
+
+  <!-- HISTORIA -->
+  <section class="about-section" id="historia">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Quiénes somos</div>
+        <h2 class="section-title">Nuestra Historia</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>Nacidos en el corazón del <strong>Polanens</strong>, somos más que una peña de afición. Somos familia. Desde nuestros inicios, Los Vikingos hemos luchado codo a codo con nuestro club, en las victorias y en las derrotas.</p>
+          <p>Como los antiguos guerreros del norte, no tememos la adversidad. Cada partido es una batalla. Cada gol, una conquista. Nuestra voz retumba en el estadio como el trueno de <strong>Thor</strong> — implacable, poderosa, inextinguible.</p>
+          <p>Somos <strong>afición, tradición y pasión</strong>. Si los colores corren por tus venas, tienes un lugar entre los Vikingos.</p>
+          <a href="#contacto" class="btn-primary" style="margin-top: 1rem; display: inline-block;">Únete a la peña</a>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-number">3</div>
+            <div class="stat-label">Socios</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">2026</div>
+            <div class="stat-label">Fundación</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Temporada</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">#1</div>
+            <div class="stat-label">Pasión</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTICIAS -->
+  <section id="noticias" style="background: var(--darker); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Últimas actualizaciones</div>
+        <h2 class="section-title">Noticias</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="news-grid">
+        <div class="news-card">
+          <div class="news-img"><span class="news-emoji">🏆</span></div>
+          <div class="news-body">
+            <div class="news-date">19 Abril 2026</div>
+            <h3 class="news-title">¡Victoria épica en casa! Ascenso del Senior Femenino a Primera Nacional</h3>
+            <p class="news-excerpt">Un partido para recordar. Los Vikingos llenamos la grada y el equipo respondió con un festival de goles que hará historia.</p>
+          </div>
+        </div>
+        </div>
+        <div class="news-card">
+          <div class="news-img"><span class="news-emoji">👕</span></div>
+          <div class="news-body">
+            <div class="news-date">20 Abril 2026</div>
+            <h3 class="news-title">Creación de la página web</h3>
+            <p class="news-excerpt">Se crea la página web de Los Vikingos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIENDA -->
+  <section class="shop-section" id="tienda">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Mercancía oficial</div>
+        <h2 class="section-title">Tienda Vikinga</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="shop-filters">
+        <button class="filter-btn active" onclick="filterShop('all', this)">Todo</button>
+        <button class="filter-btn" onclick="filterShop('ropa', this)">Ropa</button>
+        <button class="filter-btn" onclick="filterShop('accesorios', this)">Accesorios</button>
+        <button class="filter-btn" onclick="filterShop('hogar', this)">Hogar</button>
+        <button class="filter-btn" onclick="filterShop('coleccion', this)">Edición Limitada</button>
+      </div>
+
+      <div class="shop-grid" id="shopGrid">
+
+        <div class="product-card" data-cat="ropa coleccion">
+          <div class="product-badge">Nuevo</div>
+          <div class="product-img">👕</div>
+          <div class="product-body">
+            <div class="product-category">Ropa · Edición Limitada</div>
+            <div class="product-name">Camiseta Vikinga 2026</div>
+            <div class="product-desc">Camiseta oficial de la temporada con escudo de Los Vikingos del Polanens imporeso. Tallas S–XXL.</div>
+            <div class="product-footer">
+              <span class="product-price">35€</span>
+              <button class="product-cta" onclick="openModal('Camiseta Vikinga 2026','10€','Camiseta oficial de la peña, temporada 2025/2026. Escudo impreso y nombre en la parte de atrás personalisable. Disponible en todas las tallas. Recógela en los eventos o contacta con la peña.')">Ver detalle</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card" data-cat="accesorios">
+          <div class="product-img">🧣</div>
+          <div class="product-body">
+            <div class="product-category">Accesorios</div>
+            <div class="product-name">Bufanda Oficial Temporada</div>
+            <div class="product-desc">Bufanda de punto jacquard con los colores de la peña y el lema "Vikingos del Polanens".</div>
+            <div class="product-footer">
+              <span class="product-price">18€</span>
+              <button class="product-cta" onclick="openModal('Bufanda Oficial Temporada','18€','Bufanda de punto jacquard en los colores oficiales. Ideal para los días de partido en el estadio. Doble capa, 160cm de largo. Perfecta como regalo.')">Ver detalle</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card" data-cat="accesorios coleccion">
+          <div class="product-badge">Limitado</div>
+          <div class="product-img">🪖</div>
+          <div class="product-body">
+            <div class="product-category">Accesorios · Edición Limitada</div>
+            <div class="product-name">Casco Vikingo</div>
+            <div class="product-desc">Casco mítico de los Vikingos. Talla única.</div>
+            <div class="product-footer">
+              <span class="product-price">22€</span>
+              <button class="product-cta" onclick="openModal('Casco Vikingo','10€','Casco mítico de los Vikingos. Talla única.')">Ver detalle</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card" data-cat="hogar">
+          <div class="product-img">☕</div>
+          <div class="product-body">
+            <div class="product-category">Hogar</div>
+            <div class="product-name">Taza del Guerrero</div>
+            <div class="product-desc">Taza cerámica 350ml con el escudo de los Vikingos y frase mítica en runas. Apta lavavajillas.</div>
+            <div class="product-footer">
+              <span class="product-price">12€</span>
+              <button class="product-cta" onclick="openModal('Taza del Guerrero','12€','Taza de cerámica de 350ml. Escudo de la peña y frase &quot;Vikingos del Polanens&quot; en runas vikingsas. Apta para microondas y lavavajillas. Gran regalo para socios.')">Ver detalle</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card" data-cat="ropa">
+          <div class="product-img">🧥</div>
+          <div class="product-body">
+            <div class="product-category">Ropa</div>
+            <div class="product-name">Sudadera Polanens Hoodie</div>
+            <div class="product-desc">Sudadera con capucha, forro interior suave y escudo al pecho. Para lucir en el estadio y en la calle.</div>
+            <div class="product-footer">
+              <span class="product-price">45€</span>
+              <button class="product-cta" onclick="openModal('Sudadera Polanens Hoodie','45€','Sudadera unisex con capucha, bolsillo canguro y puños reforzados. Logo bordado al pecho y lema en la espalda. Colores negro/rojo. Disponible en S–XXL.')">Ver detalle</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card" data-cat="hogar coleccion">
+          <div class="product-badge">Nuevo</div>
+          <div class="product-img">🪵</div>
+          <div class="product-body">
+            <div class="product-category">Hogar · Edición Limitada</div>
+            <div class="product-name">Bandera del Valhalla</div>
+            <div class="product-desc">Bandera oficial de la peña, 150x90cm. Perfecta para el estadio o para decorar tu espacio vikingo.</div>
+            <div class="product-footer">
+              <span class="product-price">28€</span>
+              <button class="product-cta" onclick="openModal('Bandera del Valhalla','28€','Bandera en poliéster de alta resistencia, 150x90cm. Colores vivos, costura reforzada y ojales metálicos. Diseño exclusivo temporada 2026. Edición de solo 150 unidades.')">Ver detalle</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card" data-cat="accesorios">
+          <div class="product-img">📿</div>
+          <div class="product-body">
+            <div class="product-category">Accesorios</div>
+            <div class="product-name">Pulsera Runas Vikingos</div>
+            <div class="product-desc">Pulsera de cuero trenzado con placa metálica grabada en runas y el logo de la peña.</div>
+            <div class="product-footer">
+              <span class="product-price">9€</span>
+              <button class="product-cta" onclick="openModal('Pulsera Runas Vikingos','9€','Pulsera artesanal de cuero trenzado con placa de acero inoxidable. Grabado en runas con el nombre de la peña. Talla única ajustable. Ideal como regalo o distinción de socio.')">Ver detalle</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card" data-cat="ropa">
+          <div class="product-img">🩳</div>
+          <div class="product-body">
+            <div class="product-category">Ropa</div>
+            <div class="product-name">Polo Viking Premium</div>
+            <div class="product-desc">Polo de algodón piqué con logo bordado. Ideal para eventos y actos oficiales de la peña.</div>
+            <div class="product-footer">
+              <span class="product-price">30€</span>
+              <button class="product-cta" onclick="openModal('Polo Viking Premium','30€','Polo de algodón piqué 100%. Logo bordado en el pecho izquierdo. Corte slim-fit. Colores disponibles: negro, granate. Tallas S–XL. Para actos oficiales y días de partido.')">Ver detalle</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="shop-note">
+        <strong>Catálogo informativo.</strong> Para adquirir cualquier artículo, contacta con la peña en nuestros eventos o a través del formulario. Los precios incluyen IVA.
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENDA -->
+  <section class="calendar-section" id="agenda">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Próximos eventos</div>
+        <h2 class="section-title">Agenda Vikinga</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="events-list">
+        <div class="event-item">
+          <div class="event-date-box">
+            <div class="event-day">26</div>
+            <div class="event-month">Abr</div>
+          </div>
+          <div class="event-info">
+            <h4>Partido en casa — Jornada 34</h4>
+            <p>Estadio del Polanens · 17:00h · Sector Vikingos, Fondo Norte</p>
+          </div>
+          <span class="event-tag home">Casa</span>
+        </div>
+        <div class="event-item">
+          <div class="event-date-box">
+            <div class="event-day">30</div>
+            <div class="event-month">Abr</div>
+          </div>
+          <div class="event-info">
+            <h4>Cena de socios — Asamblea anual</h4>
+            <p>Bar Valhalla · 21:00h · Entrada libre para socios</p>
+          </div>
+          <span class="event-tag social">Social</span>
+        </div>
+        <div class="event-item">
+          <div class="event-date-box">
+            <div class="event-day">04</div>
+            <div class="event-month">May</div>
+          </div>
+          <div class="event-info">
+            <h4>Desplazamiento vikingo — Jornada 35</h4>
+            <p>Estadio rival · Salida en bus desde el Polanens · 10:30h</p>
+          </div>
+          <span class="event-tag away">Fuera</span>
+        </div>
+        <div class="event-item">
+          <div class="event-date-box">
+            <div class="event-day">10</div>
+            <div class="event-month">May</div>
+          </div>
+          <div class="event-info">
+            <h4>Último partido en casa — Fiesta de fin de temporada</h4>
+            <p>Estadio del Polanens · 20:00h · Celebración post-partido</p>
+          </div>
+          <span class="event-tag home">Casa</span>
+        </div>
+        <div class="event-item">
+          <div class="event-date-box">
+            <div class="event-day">17</div>
+            <div class="event-month">May</div>
+          </div>
+          <div class="event-info">
+            <h4>Torneo de fútbol 7 — Vikingos Cup</h4>
+            <p>Campo municipal del Polanens · Todo el día · Inscripción abierta</p>
+          </div>
+          <span class="event-tag social">Social</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section id="galeria" style="background: var(--darker); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Momentos épicos</div>
+        <h2 class="section-title">Galería</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item">🏟️</div>
+        <div class="gallery-item">🎉</div>
+        <div class="gallery-item">⚔️</div>
+        <div class="gallery-item">🔥</div>
+        <div class="gallery-item">🏆</div>
+        <div class="gallery-item">📸</div>
+        <div class="gallery-item">🍺</div>
+      </div>
+      <p style="text-align:center; color: var(--muted); font-size: 13px; margin-top: 1.5rem; letter-spacing: 0.08em;">Sustituid los iconos por vuestras imágenes reales</p>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contact-section" id="contacto">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Habla con nosotros</div>
+        <h2 class="section-title">Contacto</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>Únete a los Vikingos</h3>
+          <div class="contact-detail">
+            <div class="contact-icon">📍</div>
+            <div>
+              <strong>Sede</strong>
+              <p>Bar Valhalla, Calle del Polanens nº 7<br>Código Postal · Ciudad</p>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-icon">📧</div>
+            <div>
+              <strong>Email</strong>
+              <p>vikingosdelpolanens@gmail.com</p>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-icon">📱</div>
+            <div>
+              <strong>WhatsApp de la peña</strong>
+              <p>Escríbenos y te añadimos al grupo</p>
+            </div>
+          </div>
+          <div class="social-links">
+            <a class="social-btn" href="#" title="Instagram">📸</a>
+            <a class="social-btn" href="#" title="Facebook">👥</a>
+            <a class="social-btn" href="#" title="Twitter / X">𝕏</a>
+            <a class="social-btn" href="#" title="YouTube">▶</a>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--text); margin-bottom: 1.5rem; letter-spacing: 0.08em;">Escríbenos</h3>
+          <div class="contact-form">
+            <input type="text" placeholder="Tu nombre" />
+            <input type="email" placeholder="Tu email" />
+            <textarea placeholder="Tu mensaje — ¿quieres hacerte socio? ¿tienes alguna pregunta?"></textarea>
+            <button class="btn-primary" style="width: 100%;">Enviar mensaje</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Los Vikingos del <span>Polanens</span></div>
+    <div class="footer-tagline">Peña de Afición · Fundada en 2003</div>
+    <div class="footer-runes">ᚹ ᛁ ᚲ ᛁ ᚾ ᚷ ᛟ ᛊ</div>
+    <p style="margin-top: 1.5rem; font-size: 11px; color: var(--muted); letter-spacing: 0.1em;">© 2026 Los Vikingos del Polanens · Todos los derechos reservados</p>
+  </footer>
+
+  <!-- MODAL PRODUCTO -->
+  <div class="modal-overlay" id="productModal" onclick="closeModal(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="document.getElementById('productModal').classList.remove('open')">✕</button>
+      <div class="product-category" id="modalCategory" style="font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.5rem;">Mercancía oficial</div>
+      <h3 id="modalName">Producto</h3>
+      <div class="price" id="modalPrice">0€</div>
+      <p id="modalDesc">Descripción del producto.</p>
+      <div class="modal-note">
+        🛡️ <strong style="color: var(--gold);">Catálogo informativo.</strong> Este artículo no está disponible para compra online. Contacta con la peña para pedidos y recogida en eventos.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function filterShop(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.product-card').forEach(card => {
+        const cats = card.getAttribute('data-cat') || '';
+        if (cat === 'all' || cats.includes(cat)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function openModal(name, price, desc) {
+      document.getElementById('modalName').textContent = name;
+      document.getElementById('modalPrice').textContent = price;
+      document.getElementById('modalDesc').textContent = desc;
+      document.getElementById('productModal').classList.add('open');
+    }
+
+    function closeModal(e) {
+      if (e.target === document.getElementById('productModal')) {
+        document.getElementById('productModal').classList.remove('open');
+      }
+    }
+
+    // Smooth reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.news-card, .product-card, .event-item, .gallery-item, .stat-box').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
