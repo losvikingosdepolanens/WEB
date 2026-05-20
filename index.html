@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juegos Educativos para Niños</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --red: #FF4B4B;
+  --yellow: #FFD93D;
+  --blue: #4B9FFF;
+  --green: #52C25A;
+  --purple: #9B5DE5;
+  --orange: #FF8C42;
+  --bg: #FFF8F0;
+  --card-radius: 24px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.10);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #9B5DE5 0%, #4B9FFF 50%, #52C25A 100%);
+  padding: 36px 24px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-emoji {
+  font-size: 56px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+header h1 {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  color: #fff;
+}
+
+header p {
+  color: rgba(255,255,255,0.88);
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.wave {
+  display: block;
+  width: 100%;
+  margin-top: -2px;
+}
+
+/* GRID */
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 28px;
+}
+
+@media (max-width: 500px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CARD */
+.card {
+  background: #fff;
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.25s;
+  position: relative;
+  border: 3px solid transparent;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+}
+
+.card.active {
+  border-color: var(--card-color);
+}
+
+.card-header {
+  padding: 28px 28px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: linear-gradient(
+    135deg,
+    var(--card-color-light),
+    var(--card-color-mid)
+  );
+}
+
+.card-icon {
+  font-size: 52px;
+}
+
+.card-title-block h2 {
+  font-family: 'Baloo 2', cursive;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2d2d2d;
+}
+
+.card-title-block .tag {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 3px 12px;
+  border-radius: 20px;
+  background: var(--card-color);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* DESCRIPTION PANEL */
+.desc-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.4s;
+  padding: 0 28px;
+}
+
+.desc-panel.open {
+  max-height: 400px;
+  padding: 20px 28px 0;
+}
+
+.desc-panel p {
+  color: #555;
+  font-size: 15px;
+  line-height: 1.7;
+  font-weight: 600;
+}
+
+.steps {
+  margin-top: 14px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: #444;
+  font-weight: 600;
+}
+
+.step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* FOOTER */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px 22px;
+}
+
+.age-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #888;
+}
+
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #2d2d2d;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: 0.4s;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+footer {
+  text-align: center;
+  padding: 24px;
+  color: #bbb;
+  font-size: 13px;
+  font-weight: 600;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <span class="header-emoji">🎓</span>
+  <h1>Juegos Educativos para Niños</h1>
+  <p>¡Aprende jugando! Descarga fichas para imprimir y colorear 🖨️</p>
+</header>
+
+<svg class="wave" viewBox="0 0 1440 48" fill="none">
+  <path d="M0 48C240 0 480 48 720 24C960 0 1200 48 1440 24V48H0Z" fill="#FFF8F0"/>
+</svg>
+
+<main>
+  <div class="grid" id="gameGrid"></div>
+</main>
+
+<div class="toast" id="toast">✅ Descarga iniciada</div>
+
+<footer>
+  🌈 Recursos educativos para Infantil y Primaria
+</footer>
+
+<script>
+
+const games = [
+{
+  id: 1,
+  title: "Sigue el Patrón de Colores",
+  icon: "🐛",
+  tag: "Patrones",
+  age: "3-5 años",
+  color: "#52C25A",
+  colorLight: "#e8faea",
+  colorMid: "#c8f0cc",
+  description: "El niño debe identificar la secuencia de colores y completarla.",
+  steps: [
+    "Observa la secuencia.",
+    "Identifica el patrón.",
+    "Completa las bolitas.",
+    "Comprueba el resultado."
+  ],
+  file: "patron_colores.jpeg"
+},
+
+{
+  id: 2,
+  title: "Bolitas de Colores",
+  icon: "🔴",
+  tag: "Colores",
+  age: "3-5 años",
+  color: "#FFD93D",
+  colorLight: "#fffbe8",
+  colorMid: "#fff3c0",
+  description: "El niño coloca bolitas del mismo color.",
+  steps: [
+    "Observa el color.",
+    "Busca la bolita igual.",
+    "Colócala en el círculo.",
+    "Repite el proceso."
+  ],
+  file: "bolitas_colores.jpeg"
+},
+
+{
+  id: 3,
+  title: "Camino de la Abeja",
+  icon: "🐝",
+  tag: "Grafomotricidad",
+  age: "3-5 años",
+  color: "#FF8C42",
+  colorLight: "#fff3eb",
+  colorMid: "#ffe0c8",
+  description: "El niño sigue el camino hasta la flor.",
+  steps: [
+    "Empieza en la abeja.",
+    "Sigue la línea.",
+    "No te salgas.",
+    "Llega a la flor."
+  ],
+  file: "camino_abeja.jpeg"
+},
+
+{
+  id: 4,
+  title: "Rellena con Plastilina",
+  icon: "🎨",
+  tag: "Psicomotricidad",
+  age: "3-6 años",
+  color: "#9B5DE5",
+  colorLight: "#f3eeff",
+  colorMid: "#dfd0ff",
+  description: "Rellena los círculos usando plastilina.",
+  steps: [
+    "Observa el color.",
+    "Haz bolitas.",
+    "Rellena los huecos.",
+    "Aprieta suavemente."
+  ],
+  file: "rellena_plastilina.jpeg"
+}
+];
+
+const grid = document.getElementById('gameGrid');
+
+games.forEach(g => {
+
+  const card = document.createElement('div');
+
+  card.className = 'card';
+
+  card.style.setProperty('--card-color', g.color);
+  card.style.setProperty('--card-color-light', g.colorLight);
+  card.style.setProperty('--card-color-mid', g.colorMid);
+
+  card.innerHTML = `
+  
+    <div class="card-header">
+      <span class="card-icon">${g.icon}</span>
+
+      <div class="card-title-block">
+        <h2>${g.title}</h2>
+        <span class="tag">${g.tag}</span>
+      </div>
+    </div>
+
+    <div class="desc-panel" id="desc-${g.id}">
+      <p>${g.description}</p>
+
+      <ul class="steps">
+
+        ${g.steps.map((s,i) => `
+        
+          <li>
+            <div class="step-num" style="background:${g.color}">
+              ${i+1}
+            </div>
+
+            <span>${s}</span>
+          </li>
+
+        `).join('')}
+
+      </ul>
+    </div>
+
+    <div class="card-footer">
+
+      <div class="age-badge">
+        🎂 ${g.age}
+      </div>
+
+      <button 
+        class="btn-download"
+        style="background:${g.color}"
+      >
+        ⬇️ Descargar
+      </button>
+
+    </div>
+  `;
+
+  // Abrir / cerrar descripción
+  const header = card.querySelector('.card-header');
+  const panel = card.querySelector('.desc-panel');
+
+  header.addEventListener('click', () => {
+
+    const isOpen = panel.classList.contains('open');
+
+    document.querySelectorAll('.desc-panel')
+      .forEach(p => p.classList.remove('open'));
+
+    document.querySelectorAll('.card')
+      .forEach(c => c.classList.remove('active'));
+
+    if (!isOpen) {
+      panel.classList.add('open');
+      card.classList.add('active');
+    }
+  });
+
+  // DESCARGA REAL JPEG
+  const btn = card.querySelector('.btn-download');
+
+  btn.addEventListener('click', (e) => {
+
+    e.stopPropagation();
+
+    showToast(`⬇️ Descargando "${g.title}"`);
+
+    downloadImage(g);
+
+  });
+
+  grid.appendChild(card);
+
+});
+
+// Toast
+function showToast(msg) {
+
+  const t = document.getElementById('toast');
+
+  t.textContent = msg;
+
+  t.classList.add('show');
+
+  setTimeout(() => {
+    t.classList.remove('show');
+  }, 3000);
+}
+
+// DESCARGAR IMAGEN REAL
+function downloadImage(g) {
+
+  // Ruta de la imagen
+  const imageUrl = `imagenes/${g.file}`;
+
+  // Crear enlace temporal
+  const a = document.createElement('a');
+
+  a.href = imageUrl;
+
+  // Nombre del archivo descargado
+  a.download = g.file;
+
+  // Lanzar descarga
+  document.body.appendChild(a);
+
+  a.click();
+
+  document.body.removeChild(a);
+}
+
+</script>
+
+</body>
+</html>
